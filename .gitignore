@@ -1,0 +1,6 @@
+.bash_history
+.viminfo
+.vim/
+*.swp
+.idea/
+a.out

@@ -1,26 +1,21 @@
-#include "alloc.c"
-
 #define MAXLEN 1000
 
 int get_line(char *, int);
 
-int readlines(char *lineptr[], int maxlines)
+int readlines(char *lineptr[], int maxlines, char *storage)
 {
-
-    printf("reading lines...\n");
-
     int len, nlines;
-    char *p, line[MAXLEN];
-
     nlines = 0;
-    while ((len = get_line(line, MAXLEN)) > 0)
-        if (nlines >= maxlines || (p = alloc(len)) == NULL)
+
+    while ((len = get_line(storage, MAXLEN)) > 0) {
+        if (nlines >= maxlines) {
             return -1;
-        else {
-            line[len-1] = '\0'; // delete \n at end of line
-            strcpy(p, line);
-            lineptr[nlines++] = p;
+        } else {
+            storage[len-1] = '\0'; // delete \n at end of line, separate lines with null
+            lineptr[nlines++] = storage;
+            storage += len; // move pointer to next block in storage
         }
+    }
 
     return nlines;
 }
